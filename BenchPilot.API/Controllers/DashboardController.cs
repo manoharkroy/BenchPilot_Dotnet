@@ -464,7 +464,7 @@ namespace BenchPilot.API.Controllers
                     ConsultantName = m.Consultant.Name,
                     JobTitle = m.Job.Title,
                     MatchScore = m.MatchScore,
-                    Skills = System.Text.Json.JsonSerializer.Deserialize<List<string>>(m.Consultant.Skills) ?? new List<string>(),
+                    Skills = m.Consultant.Skills ?? new List<string>(),
                     Rate = $"${m.Consultant.Rate}/hr",
                     Location = m.Consultant.Location,
                     CreatedAt = m.CreatedAt
@@ -485,7 +485,7 @@ namespace BenchPilot.API.Controllers
                     ConsultantName = m.Consultant.Name,
                     JobTitle = m.Job.Title,
                     MatchScore = m.MatchScore,
-                    Skills = System.Text.Json.JsonSerializer.Deserialize<List<string>>(m.Consultant.Skills) ?? new List<string>(),
+                    Skills = m.Consultant.Skills ?? new List<string>(),
                     Rate = $"${m.Consultant.Rate}/hr",
                     Location = m.Consultant.Location,
                     CreatedAt = m.CreatedAt
@@ -506,7 +506,7 @@ namespace BenchPilot.API.Controllers
                     ConsultantName = m.Consultant.Name,
                     JobTitle = m.Job.Title,
                     MatchScore = m.MatchScore,
-                    Skills = System.Text.Json.JsonSerializer.Deserialize<List<string>>(m.Consultant.Skills) ?? new List<string>(),
+                    Skills = m.Consultant.Skills ?? new List<string>(),
                     Rate = $"${m.Consultant.Rate}/hr",
                     Location = m.Consultant.Location,
                     CreatedAt = m.CreatedAt
