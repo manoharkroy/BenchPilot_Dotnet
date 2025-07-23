@@ -12,6 +12,12 @@ namespace BenchPilot.Core.Models
         [Required]
         public int ConsultantId { get; set; }
         
+        [Required]
+        public int UserId { get; set; }
+        
+        [Required]
+        public int TeamId { get; set; }
+        
         [Range(0, 100)]
         public int MatchScore { get; set; }
         
@@ -40,5 +46,7 @@ namespace BenchPilot.Core.Models
         // Navigation properties
         public virtual JobRequirement Job { get; set; } = null!;
         public virtual Consultant Consultant { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
+        public virtual Team Team { get; set; } = null!;
     }
 }

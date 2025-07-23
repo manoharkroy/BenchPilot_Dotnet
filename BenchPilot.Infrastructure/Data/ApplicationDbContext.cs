@@ -21,6 +21,7 @@ namespace BenchPilot.Infrastructure.Data
         public DbSet<Email> Emails { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Submission> Submissions { get; set; }
+        public DbSet<SystemAlert> SystemAlerts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -84,6 +85,16 @@ namespace BenchPilot.Infrastructure.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.Email);
                 
+                entity.HasOne(e => e.User)
+                    .WithMany(e => e.Consultants)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
+                entity.HasOne(e => e.Team)
+                    .WithMany(e => e.Consultants)
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
                 entity.Property(e => e.Skills)
                     .HasConversion(
                         v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
@@ -95,6 +106,16 @@ namespace BenchPilot.Infrastructure.Data
             builder.Entity<JobRequirement>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.User)
+                    .WithMany(e => e.JobRequirements)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
+                entity.HasOne(e => e.Team)
+                    .WithMany(e => e.JobRequirements)
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
                 
                 entity.Property(e => e.Skills)
                     .HasConversion(
@@ -120,6 +141,16 @@ namespace BenchPilot.Infrastructure.Data
             {
                 entity.HasKey(e => e.Id);
                 
+                entity.HasOne(e => e.User)
+                    .WithMany(e => e.Emails)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
+                entity.HasOne(e => e.Team)
+                    .WithMany(e => e.Emails)
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
                 entity.HasOne(e => e.RelatedJob)
                     .WithMany(e => e.RelatedEmails)
                     .HasForeignKey(e => e.RelatedJobId)
@@ -130,6 +161,16 @@ namespace BenchPilot.Infrastructure.Data
             builder.Entity<Match>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.User)
+                    .WithMany(e => e.Matches)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
+                entity.HasOne(e => e.Team)
+                    .WithMany(e => e.Matches)
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
                 
                 entity.Property(e => e.KeyStrengths)
                     .HasConversion(
@@ -159,6 +200,16 @@ namespace BenchPilot.Infrastructure.Data
             {
                 entity.HasKey(e => e.Id);
                 
+                entity.HasOne(e => e.User)
+                    .WithMany(e => e.Submissions)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
+                entity.HasOne(e => e.Team)
+                    .WithMany(e => e.Submissions)
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                
                 entity.HasOne(e => e.Job)
                     .WithMany(e => e.Submissions)
                     .HasForeignKey(e => e.JobId)
@@ -168,6 +219,27 @@ namespace BenchPilot.Infrastructure.Data
                     .WithMany(e => e.Submissions)
                     .HasForeignKey(e => e.ConsultantId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configure SystemAlert entity
+            builder.Entity<SystemAlert>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.User)
+                    .WithMany()
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.SetNull);
+                
+                entity.HasOne(e => e.Team)
+                    .WithMany()
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.SetNull);
+                
+                entity.HasOne(e => e.ResolvedByUser)
+                    .WithMany()
+                    .HasForeignKey(e => e.ResolvedBy)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             // Seed initial data

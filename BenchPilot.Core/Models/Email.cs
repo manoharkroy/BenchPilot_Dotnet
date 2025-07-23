@@ -7,8 +7,14 @@ namespace BenchPilot.Core.Models
         public int Id { get; set; }
         
         [Required]
+        public int UserId { get; set; }
+        
+        [Required]
+        public int TeamId { get; set; }
+        
+        [Required]
         [EmailAddress]
-        public string From { get; set; } = string.Empty;
+        public string FromEmail { get; set; } = string.Empty;
         
         [MaxLength(200)]
         public string FromName { get; set; } = string.Empty;
@@ -51,6 +57,8 @@ namespace BenchPilot.Core.Models
         public int? RelatedJobId { get; set; }
         
         // Navigation properties
+        public virtual User User { get; set; } = null!;
+        public virtual Team Team { get; set; } = null!;
         public virtual JobRequirement? RelatedJob { get; set; }
     }
 }

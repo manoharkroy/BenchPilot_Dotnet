@@ -7,6 +7,12 @@ namespace BenchPilot.Core.Models
         public int Id { get; set; }
         
         [Required]
+        public int UserId { get; set; }
+        
+        [Required]
+        public int TeamId { get; set; }
+        
+        [Required]
         [MaxLength(200)]
         public string Title { get; set; } = string.Empty;
         
@@ -55,9 +61,9 @@ namespace BenchPilot.Core.Models
         
         public List<string> NiceToHave { get; set; } = new();
         
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
-        public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
         [MaxLength(50)]
         public string Source { get; set; } = "manual_entry";
@@ -88,6 +94,8 @@ namespace BenchPilot.Core.Models
         public bool IsActive { get; set; } = true;
         
         // Navigation properties
+        public virtual User User { get; set; } = null!;
+        public virtual Team Team { get; set; } = null!;
         public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
         public virtual ICollection<Match> Matches { get; set; } = new List<Match>();
         public virtual ICollection<Email> RelatedEmails { get; set; } = new List<Email>();

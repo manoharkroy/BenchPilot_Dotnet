@@ -54,6 +54,7 @@ namespace BenchPilot.Core.Models
         public virtual ICollection<JobRequirement> JobRequirements { get; set; } = new List<JobRequirement>();
         public virtual ICollection<Email> Emails { get; set; } = new List<Email>();
         public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+        public virtual ICollection<Match> Matches { get; set; } = new List<Match>();
         public virtual ICollection<UserActivity> Activities { get; set; } = new List<UserActivity>();
     }
     
@@ -95,6 +96,9 @@ namespace BenchPilot.Core.Models
         public virtual ICollection<User> Users { get; set; } = new List<User>();
         public virtual ICollection<Consultant> Consultants { get; set; } = new List<Consultant>();
         public virtual ICollection<JobRequirement> JobRequirements { get; set; } = new List<JobRequirement>();
+        public virtual ICollection<Email> Emails { get; set; } = new List<Email>();
+        public virtual ICollection<Match> Matches { get; set; } = new List<Match>();
+        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
     }
     
     public class UserLimit
@@ -124,6 +128,43 @@ namespace BenchPilot.Core.Models
         
         // Navigation properties
         public virtual User User { get; set; } = null!;
+    }
+    
+    public class SystemAlert
+    {
+        public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(50)]
+        public string AlertType { get; set; } = string.Empty;
+        
+        [Required]
+        [MaxLength(200)]
+        public string Title { get; set; } = string.Empty;
+        
+        [Required]
+        [MaxLength(1000)]
+        public string Message { get; set; } = string.Empty;
+        
+        [MaxLength(20)]
+        public string Severity { get; set; } = "Medium";
+        
+        public int? UserId { get; set; }
+        
+        public int? TeamId { get; set; }
+        
+        public bool IsResolved { get; set; } = false;
+        
+        public DateTime? ResolvedAt { get; set; }
+        
+        public int? ResolvedBy { get; set; }
+        
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        // Navigation properties
+        public virtual User? User { get; set; }
+        public virtual Team? Team { get; set; }
+        public virtual User? ResolvedByUser { get; set; }
     }
     
     public class UserActivity

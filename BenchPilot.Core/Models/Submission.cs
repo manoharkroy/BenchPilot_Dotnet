@@ -13,6 +13,12 @@ namespace BenchPilot.Core.Models
         public int ConsultantId { get; set; }
         
         [Required]
+        public int UserId { get; set; }
+        
+        [Required]
+        public int TeamId { get; set; }
+        
+        [Required]
         [EmailAddress]
         public string ToEmail { get; set; } = string.Empty;
         
@@ -39,6 +45,12 @@ namespace BenchPilot.Core.Models
         
         public string? Notes { get; set; }
         
+        public bool ResponseReceived { get; set; } = false;
+        
+        public DateTime? ResponseDate { get; set; }
+        
+        public bool InterviewScheduled { get; set; } = false;
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -46,5 +58,7 @@ namespace BenchPilot.Core.Models
         // Navigation properties
         public virtual JobRequirement Job { get; set; } = null!;
         public virtual Consultant Consultant { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
+        public virtual Team Team { get; set; } = null!;
     }
 }

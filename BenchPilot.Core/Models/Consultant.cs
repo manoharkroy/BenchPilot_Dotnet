@@ -7,6 +7,12 @@ namespace BenchPilot.Core.Models
         public int Id { get; set; }
         
         [Required]
+        public int UserId { get; set; }
+        
+        [Required]
+        public int TeamId { get; set; }
+        
+        [Required]
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
         
@@ -47,11 +53,15 @@ namespace BenchPilot.Core.Models
         
         public string? ResumeFileName { get; set; }
         
+        public string? ResumeFilePath { get; set; }
+        
         public string? Notes { get; set; }
         
         public bool IsActive { get; set; } = true;
         
         // Navigation properties
+        public virtual User User { get; set; } = null!;
+        public virtual Team Team { get; set; } = null!;
         public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
         public virtual ICollection<Match> Matches { get; set; } = new List<Match>();
     }
