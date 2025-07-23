@@ -22,9 +22,6 @@ namespace BenchPilot.Infrastructure.Data
         public DbSet<Match> Matches { get; set; }
         public DbSet<Submission> Submissions { get; set; }
 
-        // System Management
-        public DbSet<SystemAlert> SystemAlerts { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -92,16 +89,6 @@ namespace BenchPilot.Infrastructure.Data
                         v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
                         v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions?)null) ?? new List<string>()
                     );
-                
-                entity.HasOne(e => e.User)
-                    .WithMany(e => e.Consultants)
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                
-                entity.HasOne(e => e.Team)
-                    .WithMany(e => e.Consultants)
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Configure JobRequirement entity
@@ -126,32 +113,12 @@ namespace BenchPilot.Infrastructure.Data
                         v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
                         v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions?)null) ?? new List<string>()
                     );
-                
-                entity.HasOne(e => e.User)
-                    .WithMany(e => e.JobRequirements)
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                
-                entity.HasOne(e => e.Team)
-                    .WithMany(e => e.JobRequirements)
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Configure Email entity
             builder.Entity<Email>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                
-                entity.HasOne(e => e.User)
-                    .WithMany(e => e.Emails)
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-                
-                entity.HasOne(e => e.Team)
-                    .WithMany()
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.Restrict);
                 
                 entity.HasOne(e => e.RelatedJob)
                     .WithMany(e => e.RelatedEmails)
@@ -185,16 +152,6 @@ namespace BenchPilot.Infrastructure.Data
                     .WithMany(e => e.Matches)
                     .HasForeignKey(e => e.ConsultantId)
                     .OnDelete(DeleteBehavior.Cascade);
-                
-                entity.HasOne(e => e.User)
-                    .WithMany()
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Restrict);
-                
-                entity.HasOne(e => e.Team)
-                    .WithMany()
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Configure Submission entity
@@ -211,37 +168,6 @@ namespace BenchPilot.Infrastructure.Data
                     .WithMany(e => e.Submissions)
                     .HasForeignKey(e => e.ConsultantId)
                     .OnDelete(DeleteBehavior.Cascade);
-                
-                entity.HasOne(e => e.User)
-                    .WithMany(e => e.Submissions)
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.Restrict);
-                
-                entity.HasOne(e => e.Team)
-                    .WithMany()
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configure SystemAlert entity
-            builder.Entity<SystemAlert>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                
-                entity.HasOne(e => e.User)
-                    .WithMany()
-                    .HasForeignKey(e => e.UserId)
-                    .OnDelete(DeleteBehavior.SetNull);
-                
-                entity.HasOne(e => e.Team)
-                    .WithMany()
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.SetNull);
-                
-                entity.HasOne(e => e.ResolvedByUser)
-                    .WithMany()
-                    .HasForeignKey(e => e.ResolvedBy)
-                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             // Seed initial data
